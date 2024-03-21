@@ -1,0 +1,24 @@
+In the provided code, the garbage collection mechanism scans the stack to find pointers to allocated memory. This is a common technique in conservative garbage collectors, where the collector assumes that any pointer residing on the stack potentially points to allocated memory. However, it's important to clarify that the variables themselves are not on the stack, but rather the pointers stored in those variables.
+
+Here's how it works:
+
+1. **Variables on the Stack**:
+   - Variables declared within a function, including pointers, are typically allocated on the stack.
+   - When a function is called, space is allocated on the stack for its local variables.
+   - Pointers stored in these variables might point to dynamically allocated memory (heap), which is what the garbage collector is interested in.
+
+2. **Scanning the Stack**:
+   - The garbage collector scans the stack to find pointers stored in local variables.
+   - It does this by iterating over memory addresses on the stack and examining their contents to determine if they resemble pointers.
+
+3. **Identifying Allocated Memory**:
+   - If a pointer found on the stack points to memory that was allocated from the heap, it indicates that this memory is reachable and should not be freed.
+
+4. **Collecting Garbage**:
+   - The garbage collector marks all chunks of allocated memory that are reachable from the stack.
+   - It then identifies chunks that were not marked as reachable, indicating that they are unreachable and can be freed.
+
+5. **Freeing Unreachable Memory**:
+   - The garbage collector frees the memory associated with unreachable chunks, reclaiming it for future allocations.
+
+In summary, while the variables themselves reside on the stack, the garbage collector is interested in the pointers stored in these variables. By scanning the stack and identifying pointers to allocated memory, it can determine which memory chunks are in use and which can be safely reclaimed.
